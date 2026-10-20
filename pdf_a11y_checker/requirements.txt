@@ -1,0 +1,6 @@
+Flask>=3.0
+pikepdf>=9.0
+pdfplumber>=0.11
+beautifulsoup4>=4.12
+requests>=2.31
+openpyxl>=3.1

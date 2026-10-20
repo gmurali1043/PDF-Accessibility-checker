@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PDF Accessibility Checker</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">&#9878;</span>
+    <div>
+      <h1>PDF Accessibility Checker</h1>
+      <p>Automated PDF/UA-1 &amp; WCAG 2.2 testing, mapped to your PDF-1&ndash;PDF-10 test suite</p>
+      <p class="poc-credit">POC Created by: Muralikrishna Guntupalli</p>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+  <div class="tabs" role="tablist" aria-label="Test PDFs by">
+    <button id="tabbtn-upload" class="tab-btn active" role="tab"
+            aria-selected="true" aria-controls="tab-upload" tabindex="0"
+            data-tab="upload">Upload PDFs</button>
+    <button id="tabbtn-crawl" class="tab-btn" role="tab"
+            aria-selected="false" aria-controls="tab-crawl" tabindex="-1"
+            data-tab="crawl">Crawl Web Pages</button>
+  </div>
+
+  <!-- =========================================================== UPLOAD == -->
+  <section id="tab-upload" class="tab-panel active" role="tabpanel"
+           aria-labelledby="tabbtn-upload" tabindex="0">
+    <div class="panel-card">
+      <h2>Test one or more PDF files</h2>
+      <p class="hint" id="upload-hint">Drop PDFs below, or click to browse. Every file is run through all 34 automated test cases.</p>
+
+      <label for="fileInput" class="visually-hidden">Choose PDF files to test</label>
+      <div id="dropzone" class="dropzone" role="button" tabindex="0"
+           aria-describedby="upload-hint">
+        <input type="file" id="fileInput" accept="application/pdf" multiple hidden>
+        <p><strong>Drag &amp; drop PDFs here</strong> or press Enter/click to choose files</p>
+        <ul id="fileList" class="file-list" aria-live="polite"></ul>
+      </div>
+      <button id="runUploadBtn" class="primary-btn" disabled>Run accessibility checks</button>
+    </div>
+
+    <section id="upload-status" class="status-banner" role="status" aria-live="polite" hidden></section>
+
+    <section id="upload-results" class="results" hidden aria-labelledby="upload-results-h">
+      <div class="results-header">
+        <h2 id="upload-results-h">Results</h2>
+        <div class="downloads">
+          <span id="upload-dl-label">Download report:</span>
+          <button class="dl-btn" data-fmt="html" aria-describedby="upload-dl-label">.html</button>
+          <button class="dl-btn" data-fmt="md" aria-describedby="upload-dl-label">.md</button>
+          <button class="dl-btn" data-fmt="xlsx" aria-describedby="upload-dl-label">.xlsx</button>
+        </div>
+      </div>
+      <div id="upload-overview" class="overview"></div>
+      <div id="upload-reportList"></div>
+    </section>
+  </section>
+
+  <!-- ============================================================ CRAWL == -->
+  <section id="tab-crawl" class="tab-panel" role="tabpanel"
+           aria-labelledby="tabbtn-crawl" tabindex="0" hidden>
+    <div class="panel-card">
+      <h2>Crawl web pages for PDFs</h2>
+      <label for="urlInput">Enter one or more webpage URLs (one per line). The tool will scan each page for linked PDFs so you can choose which ones to test.</label>
+      <textarea id="urlInput" rows="5" placeholder="https://example.com/publications
+https://example.com/reports"></textarea>
+      <button id="runDiscoverBtn" class="primary-btn">Find PDFs on these pages</button>
+    </div>
+
+    <section id="crawl-discover-status" class="status-banner" role="status" aria-live="polite" hidden></section>
+
+    <section id="crawl-picker" class="panel-card picker-card" hidden aria-labelledby="crawl-picker-h">
+      <h2 id="crawl-picker-h">Choose which PDFs to test</h2>
+      <fieldset>
+        <legend class="visually-hidden">PDFs found on the crawled page(s)</legend>
+        <div class="picker-toolbar">
+          <label class="select-all-label">
+            <input type="checkbox" id="selectAllPdfs">
+            Select all PDFs
+          </label>
+          <span id="pdf-selected-count" class="picker-count" aria-live="polite">0 of 0 selected</span>
+        </div>
+        <ul id="pdfCheckList" class="pdf-checklist"></ul>
+      </fieldset>
+      <button id="runCrawlCheckBtn" class="primary-btn" disabled>Run accessibility checks on selected PDFs</button>
+    </section>
+
+    <section id="crawl-status" class="status-banner" role="status" aria-live="polite" hidden></section>
+
+    <section id="crawl-results" class="results" hidden aria-labelledby="crawl-results-h">
+      <div class="results-header">
+        <h2 id="crawl-results-h">Results</h2>
+        <div class="downloads">
+          <span id="crawl-dl-label">Download report:</span>
+          <button class="dl-btn" data-fmt="html" aria-describedby="crawl-dl-label">.html</button>
+          <button class="dl-btn" data-fmt="md" aria-describedby="crawl-dl-label">.md</button>
+          <button class="dl-btn" data-fmt="xlsx" aria-describedby="crawl-dl-label">.xlsx</button>
+        </div>
+      </div>
+      <div id="crawl-overview" class="overview"></div>
+      <div id="crawl-reportList"></div>
+    </section>
+  </section>
+</main>
+
+<footer>
+  <p>Runs entirely on your machine. Automated results marked <em>Needs review</em> or <em>Manual check needed</em> still require a human to confirm - see the numbered steps on each item.</p>
+</footer>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
